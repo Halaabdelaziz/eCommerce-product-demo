@@ -10,6 +10,8 @@ use App\Http\Controllers\PinikleServiceController;
 class PinikleServiceController extends Controller
 {
     //
+    protected $refid;
+    protected $gateway;
     private $PinikleService;
     public function __construct(PinikleService $PinikleService){
         $this->PinikleService =  $PinikleService;
@@ -30,7 +32,8 @@ class PinikleServiceController extends Controller
     }
     public function pay(Request $request)
     {
-
+        $this->refid = $request->refid;
+        $this->gateway = $request->gateway;
         $data =[
             "refid"=>$request->refid,
             "gateway"=>$request->gateway,
@@ -39,15 +42,16 @@ class PinikleServiceController extends Controller
         return $this->PinikleService->sendPayment($data);
     }
 
-    public function paymentCallBack(Request $request)
+    public function paymentCallBack()
     {
         $data=[
-            "refid"=>$request->refid,
-            "gateway"=>$request->gateway,
+            "refid"=>$this->refid,
+            "gateway"=>$this->gateway
         ];
     
         $this->PinikleService->getPaymentStatus($data);
     }
+
 
     public function loadViewPaid(){
 

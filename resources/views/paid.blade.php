@@ -12,9 +12,8 @@
           <h3 class="text-center">Thank you for your payment, it’s processing</h3>
           
           <p class="text-center">Your order # is: 100000023</p>
-          <p class="text-center">You will receive an order confirmation email with details of your order and a link to track your process.</p>
             <center><div class="btn-group" style="margin-top:50px;">
-                <a href="#" class="btn btn-lg btn-warning">CONTINUE</a>
+                <a href="/products" class="btn btn-lg btn-warning">CONTINUE</a>
             </div></center>
         </div>
 	</div>

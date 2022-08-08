@@ -2,8 +2,10 @@
 namespace App\Http\Services;
 
 use GuzzleHttp\Client;
+use App\Models\Transaction;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;    
 
 
@@ -52,6 +54,10 @@ class PinikleService{
         $response = $this->buildRequest('api/initiatePayment','POST',$data);
         $redirect_url = $response['data']['redirect_url'];
 
+        Transaction::create([
+            'invoice_number'=> $response['data']['invoice_number'],
+            'user_id'=>Auth::user()->id
+        ]);
         return redirect()->away($redirect_url);
     }
 
@@ -60,6 +66,9 @@ class PinikleService{
         $res = $this->buildRequest('api/checkPaymentStatus','POST',$data);
         if($res['success']==true && $res['data']['status']=="paid"){
             return redirect()->away('http://127.0.0.1:8000/paid');
+        }
+        else{
+            return redirect()->away('http://127.0.0.1:8000/fail');
         }
        
     }
